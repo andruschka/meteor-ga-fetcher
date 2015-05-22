@@ -22,12 +22,23 @@ class GaFetcher
   fetchData: (query)->
     unless @authorized is true
       @authorize()
-    unless query.ids?
-      query.ids = profileId
-    if query['start-date']? and query['end-date']? and query.metrics?
-      opts.auth = authClient
-      getDataSync = Meteor.wrapAsync analytics.data.ga.get
-      data = getDataSync(opts)
-      return data.rows
+    if query?
+      try
+        check query,
+          'ids': Match.Optional(String)
+          'start-date': Match.Optional(String)
+          'end-date': String
+          'metrics': String
+          'dimensions': Match.Optional(String)
+          'filters': Match.Optional(String)
+        unless query.auth?
+          query.auth = authClient
+        unless query.ids?
+          query.ids = profileId
+        getDataSync = Meteor.wrapAsync analytics.data.ga.get
+        data = getDataSync(query)
+        return data.rows
+      catch err
+        throw err
     else
-      throw new Error("Check your query! You have to pass atleast {start-date, end-date, metrics}.")
+      throw new Error("You have to pass at least {start-date, end-date, metrics}.")
