@@ -1,6 +1,6 @@
 Package.describe({
   name: 'andruschka:ga-fetcher',
-  version: '0.0.2',
+  version: '0.0.3',
   // Brief, one-line summary of the package.
   summary: 'Fetch data from Google Analytics, synchronously.  ',
   // URL to the Git repository containing the source code for this package.
