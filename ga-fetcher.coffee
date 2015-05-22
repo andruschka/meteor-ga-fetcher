@@ -19,12 +19,15 @@ class GaFetcher
     else
       @authorized = false
       console.error "Error @ authorize..."
-  fetchData: (opts)->
+  fetchData: (query)->
     unless @authorized is true
       @authorize()
-    unless opts.ids?
-      opts.ids = profileId
-    opts.auth = authClient
-    getDataSync = Meteor.wrapAsync analytics.data.ga.get
-    data = getDataSync(opts)
-    return data.rows
+    unless query.ids?
+      query.ids = profileId
+    if query['start-date']? and query['end-date']? and query.metrics?
+      opts.auth = authClient
+      getDataSync = Meteor.wrapAsync analytics.data.ga.get
+      data = getDataSync(opts)
+      return data.rows
+    else
+      throw new Error("Check your query! You have to pass atleast {start-date, end-date, metrics}.")

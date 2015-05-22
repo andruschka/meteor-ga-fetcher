@@ -12,7 +12,7 @@ Package.describe({
 
 Package.onUse(function(api) {
   api.versionsFrom('1.0.2');
-  api.use(['coffeescript','classcraft:googleapis']);
+  api.use(['coffeescript','classcraft:googleapis@1.1.0']);
   api.addFiles('ga-fetcher.coffee', 'server');
   api.export('GaFetcher', 'server');
 });
