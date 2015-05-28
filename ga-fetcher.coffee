@@ -24,13 +24,24 @@ class GaFetcher
       @authorize()
     if query?
       try
+        checkDateString = Match.Where (str)->
+          check(str, String)
+          if str.length is 10 and str.split("-").length is 3
+            return true
+          else
+            return false
         check query,
           'ids': Match.Optional(String)
-          'start-date': Match.Optional(String)
-          'end-date': String
+          'start-date': checkDateString
+          'end-date': checkDateString
           'metrics': String
           'dimensions': Match.Optional(String)
+          'sort': Match.Optional(String)
           'filters': Match.Optional(String)
+          'segment': Match.Optional(String)
+          'samplingLevel': Match.Optional(String)
+          'start-index': Match.Optional(String)
+          'max-results': Match.Optional(String)
         unless query.auth?
           query.auth = authClient
         unless query.ids?
